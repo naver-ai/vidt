@@ -357,6 +357,7 @@ python -m torch.distributed.launch \
        --with_box_refine True \
        --coco_path /path/to/coco \
        --resume /path/to/vidt_nano \
+       --pre_trained none \
        --eval True
 </code></pre>
 </details>
@@ -376,6 +377,7 @@ python -m torch.distributed.launch \
        --with_box_refine True \
        --coco_path /path/to/coco \
        --resume /path/to/vidt_tiny\
+       --pre_trained none \
        --eval True
 </code></pre>
 </details>
@@ -395,6 +397,7 @@ python -m torch.distributed.launch \
        --with_box_refine True \
        --coco_path /path/to/coco \
        --resume /path/to/vidt_small \
+       --pre_trained none \
        --eval True
 </code></pre>
 </details>
@@ -414,6 +417,7 @@ python -m torch.distributed.launch \
        --with_box_refine True \
        --coco_path /path/to/coco \
        --resume /path/to/vidt_base \
+       --pre_trained none \
        --eval True
 </code></pre>
 </details>
