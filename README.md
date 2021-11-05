@@ -46,7 +46,7 @@ ViDT is an end-to-end fully transformer-based object detector, which directly pr
 
 | Backbone and Size | Training Data | Epochs | Resulution | Params | ImageNet Acc. | Checkpoint |
 | :------------: | :------------: | :------------: | :------------: | :------------: | :------------: | :------------: |
-| `Swin-nano` | ImageNet-1K | 300 | 224 | 6M | 74.9% | [Github](https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-swin/swin_nano_patch4_window7_224.pth) |
+| `Swin-nano` | ImageNet-1K | 300 | 224 | 6M | 74.9% | [Github](https://github.com/naver-ai/vidt/releases/download/v0.1-swin/swin_nano_patch4_window7_224.pth) |
 | `Swin-tiny` | ImageNet-1K | 300 | 224 | 28M | 81.2% | [Github](https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_tiny_patch4_window7_224.pth) |
 | `Swin-small` | ImageNet-1K | 300 | 224 | 50M | 83.2% | [Github](https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_small_patch4_window7_224.pth) |
 | `Swin-base` | ImageNet-22K | 90 | 224 | 88M | 86.3% | [Github](https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window7_224_22k.pth) |
@@ -62,10 +62,10 @@ The efficiacy of distillation with token mathcing and decoding layer drop are ve
 
 | Backbone | Epochs | AP | AP50 | AP75 | AP_S | AP_M | AP_L | Params | FPS | Checkpoint / Log |
 | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | 
-| `Swin-nano` | 50 (150) | 40.4 (42.6) | 59.9 (62.2) | 43.0 (45.7) | 23.1 (24.9) | 42.8 (45.4) | 55.9 (59.1) | 16M | 20.0 | [Github](https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-e50/vidt_nano_50.pth) / [Log](https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-e50/vidt_nano_50.txt) <br>([Github](https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-e150/vidt_nano_150.pth) / [Log](https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-e150/vidt_nano_150.txt))|
-| `Swin-tiny` | 50 (150)| 44.9 (47.2) | 64.7 (66.7) | 48.3 (51.4) | 27.5 (28.4) | 47.9 (50.2) | 61.9 (64.7) | 38M | 17.2 | [Github](https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-e50/vidt_tiny_50.pth) / [Log](https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-e50/vidt_tiny_50.txt) <br>([Github](https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-e150/vidt_tiny_150.pth) / [Log](https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-e150/vidt_tiny_150.txt))|
-| `Swin-small` | 50 (150) | 47.4 (48.8) | 67.7 (68.8) | 51.2 (53.0) | 30.4 (30.7) | 50.7 (52.0) | 64.6 (65.9) | 60M | 12.1 | [Github](https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-e50/vidt_small_50.pth) / [Log](https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-e50/vidt_small_50.txt) <br>([Github](https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-e150/vidt_small_150.pth) / [Log](https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-e150/vidt_small_150.txt))|
-| `Swin-base` | 50 (150) | 49.4 (50.4) | 69.6 (70.4) | 53.4 (54.8) | 31.6 (34.1) | 52.4 (54.2) | 66.8 (67.4) | 0.1B | 9.0 | [Github](https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-e50/vidt_base_50.pth) / [Log](https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-e50/vidt_base_50.txt) <br>([Github](https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-e150/vidt_base_150.pth) / [Log](https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-e150/vidt_base_150.txt)) |
+| `Swin-nano` | 50 (150) | 40.4 (42.6) | 59.9 (62.2) | 43.0 (45.7) | 23.1 (24.9) | 42.8 (45.4) | 55.9 (59.1) | 16M | 20.0 | [Github](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt/vidt_nano_50.pth) / [Log](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt/vidt_nano_50.txt) <br>([Github](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt/vidt_nano_150.pth) / [Log](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt/vidt_nano_150.txt))|
+| `Swin-tiny` | 50 (150)| 44.9 (47.2) | 64.7 (66.7) | 48.3 (51.4) | 27.5 (28.4) | 47.9 (50.2) | 61.9 (64.7) | 38M | 17.2 | [Github](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt/vidt_tiny_50.pth) / [Log](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt/vidt_tiny_50.txt) <br>([Github](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt/vidt_tiny_150.pth) / [Log](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt/vidt_tiny_150.txt))|
+| `Swin-small` | 50 (150) | 47.4 (48.8) | 67.7 (68.8) | 51.2 (53.0) | 30.4 (30.7) | 50.7 (52.0) | 64.6 (65.9) | 60M | 12.1 | [Github](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt/vidt_small_50.pth) / [Log](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt/vidt_small_50.txt) <br>([Github](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt/vidt_small_150.pth) / [Log](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt/vidt_small_150.txt))|
+| `Swin-base` | 50 (150) | 49.4 (50.4) | 69.6 (70.4) | 53.4 (54.8) | 31.6 (34.1) | 52.4 (54.2) | 66.8 (67.4) | 0.1B | 9.0 | [Github](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt/vidt_base_50.pth) / [Log](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt/vidt_base_50.txt) <br>([Github](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt/vidt_base_150.pth) / [Log](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt/vidt_base_150.txt)) |
 
 ##### B.2. Distillation with Token Matching (Coefficient 4.0)
 
@@ -90,9 +90,9 @@ All the models are trained for 50 epochs with distillation.
 </tr>
 <tr>
 <td>Checkpoint / Log</td>
-<td> <a href="https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-distil-e50/vidt_nano_50.pth">Github</a> / <a href="https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-distil-e50/vidt_nano_50.txt">Log</a> </td>
-<td> <a href="https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-distil-e50/vidt_tiny_50.pth">Github</a> / <a href="https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-distil-e50/vidt_tiny_50.txt">Log</a> </td>
-<td> <a href="https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-distil-e50/vidt_small_50.pth">Github</a> / <a href="https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-vidt-distil-e50/vidt_small_50.txt">Log</a> </td>
+<td> <a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_nano_50.pth">Github</a> / <a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_nano_50.txt">Log</a> </td>
+<td> <a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_tiny_50.pth">Github</a> / <a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_tiny_50.txt">Log</a> </td>
+<td> <a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_small_50.pth">Github</a> / <a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_small_50.txt">Log</a> </td>
 </tr>
 </thead>
 <tbody>
