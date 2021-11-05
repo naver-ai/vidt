@@ -90,15 +90,9 @@ All the models are trained for 50 epochs with distillation.
 <td>47.4</td>
 </tr>
 <td>Coefficient = 4.0</td>
-<td>41.8</td>
-<td>46.6</td>
-<td>49.2</td>
-</tr>
-<tr>
-<td>Checkpoint / Log</td>
-<td> <a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_nano_50.pth">Github</a> / <a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_nano_50.txt">Log</a> </td>
-<td> <a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_tiny_50.pth">Github</a> / <a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_tiny_50.txt">Log</a> </td>
-<td> <a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_small_50.pth">Github</a> / <a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_small_50.txt">Log</a> </td>
+<td>41.8 (<a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_nano_50.pth">Github</a> / <a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_nano_50.txt">Log</a>)</td>
+<td>46.6 (<a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_tiny_50.pth">Github</a> / <a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_tiny_50.txt">Log</a>)</td>
+<td>49.2 (<a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_small_50.pth">Github</a> / <a href="https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-distil-e50/vidt_small_50.txt">Log</a>)</td>
 </tr>
 </thead>
 <tbody>
