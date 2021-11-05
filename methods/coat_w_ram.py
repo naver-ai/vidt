@@ -181,7 +181,7 @@ class ConvRelPosEnc(nn.Module):
         return EV_hat
 
 
-class ReconfiguredAttentionModule(nn.Module):
+class RonfiguredAttentionModule(nn.Module):
     """ Factorized attention with convolutional relative position encoding class. """
 
     def __init__(self, dim, num_heads=8, qkv_bias=False, attn_drop=0., proj_drop=0., shared_crpe=None):
@@ -317,7 +317,7 @@ class SerialBlock(nn.Module):
         self.cpe = shared_cpe
 
         self.norm1 = norm_layer(dim)
-        self.factoratt_crpe = ReconfiguredAttentionModule(
+        self.factoratt_crpe = RonfiguredAttentionModule(
             dim, num_heads=num_heads, qkv_bias=qkv_bias, attn_drop=attn_drop, proj_drop=drop, shared_crpe=shared_crpe)
         self.drop_path = DropPath(drop_path) if drop_path > 0. else nn.Identity()
 
@@ -336,7 +336,7 @@ class SerialBlock(nn.Module):
         H, W = size
         x = self.norm1(x)
         x, det = x[:, :-self.det_token_num, :], x[:, -self.det_token_num:, :]
-        orig_x = x[:, :-1, :].view(B, H, W, C)
+        orig_x = x[:, 1:, :].view(B, H, W, C)
 
         # projects det positional encoding: make the channel size suitable for the current layer
         patch_pos, det_pos = pos
@@ -348,7 +348,7 @@ class SerialBlock(nn.Module):
             cross_x = orig_x + patch_pos
             # det token + learnable pos encoding
             det = det + det_pos
-            x = (x, cross_x)
+            x = (self.cpe(x, size), cross_x) # (x, cross_x)
         else:
             # it cross_attn is decativated, only [PATCH] and [DET] self-attention are performed
             det = det + det_pos

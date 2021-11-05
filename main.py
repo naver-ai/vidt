@@ -279,10 +279,6 @@ if __name__ == '__main__':
     else:
         args.dim_feedforward = 1024
 
-    # 'swin_nano' is not available on the web, thus we use the local path.
-    if args.backbone_name == 'swin_nano':
-        args.pre_trained = os.path.join('pretrain_models', 'backbone', 'swin_nano_patch4_window7_224_v2.pth')
-
     # log file name
     if args.output_dir == '':
         # default out_dir name if not specified

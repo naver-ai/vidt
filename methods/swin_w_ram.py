@@ -949,19 +949,13 @@ def swin_nano(pretrained=None, **kwargs):
 
     if pretrained is not None:
         if pretrained == 'imagenet':
-            import sys
-            print('Not available from web')
-            sys.exit(1)
-
-            '''
             torch.hub._download_url_to_file(
-                url="https://oss.navercorp.com/hwanjun-song/ViDT/releases/download/v0.1-swin/swin_nano_patch4_window7_224.pth",
+                    url="https://github.com/naver-ai/vidt/releases/download/v0.1-swin/swin_nano_patch4_window7_224.pth",
                 dst="checkpoint.pth"
             )
             checkpoint = torch.load("checkpoint.pth", map_location="cpu")
             model.load_state_dict(checkpoint["model"], strict=False)
             print('Load the backbone pretrained on ImageNet 1K')
-            '''
 
         else:
             checkpoint = torch.load(pretrained, map_location="cpu")
