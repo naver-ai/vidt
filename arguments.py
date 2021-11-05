@@ -136,7 +136,6 @@ def get_args_parser():
     parser.add_argument('--distil_model_path', default=None, type=str, help="Distillation model path to load")
     #######
 
-    ####### See DDETR: https://openreview.net/forum?id=LhbD74dsZFL for below techniques
     # cross-scale fusion
     parser.add_argument('--cross_scale_fusion', default=False, type=lambda x: (str(x).lower() == 'true'), help='use of scale fusion')
     # iou-aware
