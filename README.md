@@ -84,6 +84,11 @@ All the models are trained for 50 epochs with distillation.
 <th>ViDT (Swin-tiny)</th>
 <th>ViDT (Swin-Small)</th>
 </tr>
+<td>Coefficient = 0.0</td>
+<td>40.4</td>
+<td>44.9</td>
+<td>47.4</td>
+</tr>
 <td>Coefficient = 4.0</td>
 <td>41.8</td>
 <td>46.6</td>
