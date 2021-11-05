@@ -1,3 +1,9 @@
+'''
+ViDT
+Copyright (c) 2021-present NAVER Corp.
+Apache License v2.0
+'''
+
 from methods.vidt.detector import build as vidt_build
 from methods.vidt_wo_neck.detector import build as vidt_wo_neck_build
 
