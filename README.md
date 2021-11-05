@@ -8,7 +8,7 @@ by [Hwanjun Song](https://scholar.google.com/citations?user=Ijzuc-8AAAAJ&hl=en&o
 * **`Oct 18, 2021`:** **ViDT now supports [Co-scale conv-attentional image Transformers (CoaT)](https://arxiv.org/pdf/2104.06399.pdf) as another body structure.**
 * **`Oct 22, 2021`:** **ViDT introduces and incorporates a cross-scale fusion module based on feature pyramid networks.**
 * **`Oct 26, 2021`:** **[IoU-awareness loss](https://arxiv.org/pdf/1912.05992.pdf), and [token labeling loss](https://arxiv.org/pdf/2104.10858.pdf) are available with ViDT.**
-* **`Nov 5, 2021`:** **The official code is released! We are uploading pre-trained models and it will takes a few days.**
+* **`Nov 5, 2021`:** **The official code is released! We are uploading pre-trained models and it will take a few days.**
 
 
 ## ViDT: Vision and Detection Transformers
