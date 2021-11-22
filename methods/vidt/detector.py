@@ -35,7 +35,6 @@ class Detector(nn.Module):
 
     def __init__(self, backbone, transformer, num_classes, num_queries,
                  aux_loss=False, with_box_refine=False,
-                 # below three techniques are introduced from an ICLR'22 submission https://openreview.net/forum?id=LhbD74dsZFL
                  # The three techniques were not used in ViDT paper.
                  # After submitting our paper, we saw the ViDT performance could be further enhanced with them.
                  cross_scale_fusion=None, iou_aware=False, token_label=False,
