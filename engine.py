@@ -78,6 +78,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
             sys.exit(1)
 
         # backprop.
+        losses /= float(n_iter_to_acc)
         losses.backward()
         if (batch_idx + 1) % n_iter_to_acc == 0:
             if max_norm > 0:
