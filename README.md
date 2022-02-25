@@ -1,4 +1,4 @@
-# ViDT: An Efficient and Effective Fully Transformer-based Object Detector
+# ViDT: An Efficient and Effective Fully Transformer-based Object Detector (ICLR'22)
 
 by [Hwanjun Song](https://scholar.google.com/citations?user=Ijzuc-8AAAAJ&hl=en&oi=ao)<sup>1</sup>, [Deqing Sun](https://scholar.google.com/citations?hl=en&user=t4rgICIAAAAJ)<sup>2</sup>, [Sanghyuk Chun](https://scholar.google.com/citations?user=4_uj0xcAAAAJ&hl=en&oi=ao)<sup>1</sup>, [Varun Jampani](https://scholar.google.com/citations?hl=en&user=1Cv6Sf4AAAAJ)<sup>2</sup>, [Dongyoon Han](https://scholar.google.com/citations?user=jcP7m1QAAAAJ&hl=en)<sup>1</sup>, <br>[Byeongho Heo](https://scholar.google.com/citations?user=4_7rLDIAAAAJ&hl=en)<sup>1</sup>, [Wonjae Kim](https://scholar.google.com/citations?hl=en&user=UpZ41EwAAAAJ)<sup>1</sup>, and [Ming-Hsuan Yang](https://scholar.google.com/citations?hl=en&user=p9-ohHsAAAAJ)<sup>2,3</sup>
 
