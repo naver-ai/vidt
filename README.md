@@ -427,11 +427,11 @@ python -m torch.distributed.launch \
 Please consider citation if our paper is useful in your research.
 
 ```BibTeX
-@article{song2021vidt,
+@inproceedings{song2022vidt,
   title={ViDT: An Efficient and Effective Fully Transformer-based Object Detector},
   author={Song, Hwanjun and Sun, Deqing and Chun, Sanghyuk and Jampani, Varun and Han, Dongyoon and Heo, Byeongho and Kim, Wonjae and Yang, Ming-Hsuan},
-  journal={arXiv preprint arXiv:2110.03921},
-  year={2021}
+  booktitle={International Conference on Learning Representation},
+  year={2022}
 }
 ```
 
