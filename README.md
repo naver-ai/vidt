@@ -228,6 +228,9 @@ We combined all the proposed components (even with longer training epochs and de
 </tbody>
 </table>
 
+The optimized ViDT+ models can be found:</br>
+[ViDT+ (Swin-nano)](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus-optimized/vidt_plus_nano_optimized.pth), [ViDT+ (Swin-tiny)](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus-optimized/vidt_plus_tiny_optimized.pth), [ViDT+ (Swin-small)](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus-optimized/vidt_plus_small_optimized.pth), and [ViDT+ (Swin-base)](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus-optimized/vidt_plus_base_optimized.pth).
+
 ### Requirements
 
 This codebase has been developed with the setting used in [Deformable DETR](https://github.com/fundamentalvision/Deformable-DETR): <br>Linux, CUDA>=9.2, GCC>=5.4, Python>=3.7, PyTorch>=1.5.1, and torchvision>=0.6.1.
