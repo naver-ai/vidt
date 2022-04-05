@@ -229,7 +229,7 @@ We combined all the proposed components (even with longer training epochs and de
 </table>
 
 The optimized ViDT+ models can be found:</br>
-[ViDT+ (Swin-nano)](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus-optimized/vidt_plus_nano_optimized.pth), [ViDT+ (Swin-tiny)](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus-optimized/vidt_plus_tiny_optimized.pth), [ViDT+ (Swin-small)](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus-optimized/vidt_plus_small_optimized.pth), and [ViDT+ (Swin-base)](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus-optimized/vidt_plus_base_optimized.pth).
+[ViDT+ (Swin-nano)](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus-optimized/vidt_plus_nano_optimized.pth), [ViDT+ (Swin-tiny)](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus-optimized/vidt_plus_tiny_optimized.pth), and [ViDT+ (Swin-small)](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus-optimized/vidt_plus_small_optimized.pth).
 
 ### Requirements
 
