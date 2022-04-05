@@ -52,10 +52,10 @@ Compared with the vailla version, ViDT+ leverages three additional components or
 
 | Method | Backbone | Epochs | AP | AP50 | AP75 | AP_S | AP_M | AP_L | Params | FPS | Checkpoint / Log |
 | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | 
-| ViDT+  | `Swin-nano` | 50 | 45.3 | 62.3 | 48.9 | 27.3 | 48.2 | 61.5 | 16M | 37.6 | [Github](https://github.com/naver-ai/) / [Log](https://github.com/naver-ai/)|
-| ViDT+   | `Swin-tiny` | 50 | 49.7 | 67.7 | 54.2 | 31.6 | 53.4 | 65.9 | 38M | 30.4 | [Github](https://github.com/naver-ai/) / [Log](https://github.com/naver-ai/) |
-| ViDT+   | `Swin-small` | 50 | 51.2 | 69.5 | 55.9 | 33.8 | 54.5 | 67.8 | 61M | 20.6 | [Github](https://github.com/naver-ai/) / [Log](https://github.com/naver-ai/)|
-| ViDT+   | `Swin-base` | 50 | 53.2 | 71.6 | 58.3 | 36.0 | 57.1 | 69.2 | 100M | 19.3 | [Github](https://github.com/naver-ai/) / [Log](https://github.com/naver-ai/)|
+| ViDT+  | `Swin-nano` | 50 | 45.3 | 62.3 | 48.9 | 27.3 | 48.2 | 61.5 | 16M | 37.6 | [Github](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus/vidt_plus_nano_det300.pth) / [Log](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus/vidt_plus_nano_det300.txt)|
+| ViDT+   | `Swin-tiny` | 50 | 49.7 | 67.7 | 54.2 | 31.6 | 53.4 | 65.9 | 38M | 30.4 | [Github](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus/vidt_plus_tiny_det300.pth) / [Log](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus/vidt_plus_tiny_det300.txt) |
+| ViDT+   | `Swin-small` | 50 | 51.2 | 69.5 | 55.9 | 33.8 | 54.5 | 67.8 | 61M | 20.6 | [Github](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus/vidt_plus_small_det300.pth) / [Log](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus/vidt_plus_small_det300.txt)|
+| ViDT+   | `Swin-base` | 50 | 53.2 | 71.6 | 58.3 | 36.0 | 57.1 | 69.2 | 100M | 19.3 | [Github](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus/vidt_plus_base_det300.pth) / [Log](https://github.com/naver-ai/vidt/releases/download/v0.1-vidt-plus/vidt_plus_base_det300.txt)|
 
 | Method | Backbone | Epochs | AP | AP50 | AP75 | AP_S | AP_M | AP_L | Params | FPS | Checkpoint / Log |
 | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | 
