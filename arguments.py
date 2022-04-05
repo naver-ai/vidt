@@ -136,13 +136,38 @@ def get_args_parser():
     parser.add_argument('--distil_model_path', default=None, type=str, help="Distillation model path to load")
     #######
 
-    # cross-scale fusion
-    parser.add_argument('--cross_scale_fusion', default=False, type=lambda x: (str(x).lower() == 'true'), help='use of scale fusion')
+    ####### For ViDT+
+
+    ## EPFF
+    parser.add_argument('--epff', default=False, type=lambda x: (str(x).lower() == 'true'),
+                        help='use of EPFF module for pyramid feature fusion')
+
+    ## UQR
+    parser.add_argument('--masks', default=False, action='store_true', help="Train segmentation head if the flag is provided")
+    parser.add_argument('--with_vector', default=False, type=bool)
+    parser.add_argument('--n_keep', default=256, type=int,
+                        help="Number of coeffs to be remained")
+    parser.add_argument('--gt_mask_len', default=128, type=int,
+                        help="Size of target mask")
+    parser.add_argument('--vector_loss_coef', default=0.7, type=float)
+    parser.add_argument('--vector_hidden_dim', default=256, type=int,
+                        help="Size of the vector embeddings (dimension of the transformer)")
+    parser.add_argument('--no_vector_loss_norm', default=False, action='store_true')
+    parser.add_argument('--activation', default='relu', type=str, help="Activation function to use")
+    parser.add_argument('--checkpoint', default=False, action='store_true')
+    parser.add_argument('--vector_start_stage', default=0, type=int)
+    parser.add_argument('--num_machines', default=1, type=int)
+    parser.add_argument('--loss_type', default='l1', type=str)
+    parser.add_argument('--dcn', default=False, action='store_true')
+
+    ## New losses
     # iou-aware
-    parser.add_argument('--iou_aware', default=False, type=lambda x: (str(x).lower() == 'true'), help='use of iou-aware loss')
+    parser.add_argument('--iou_aware', default=False, type=lambda x: (str(x).lower() == 'true'),
+                        help='use of iou-aware loss')
     parser.add_argument('--iouaware_loss_coef', default=2, type=float)
     # token label
-    parser.add_argument('--token_label', default=False, type=lambda x: (str(x).lower() == 'true'), help='use of token label loss')
+    parser.add_argument('--token_label', default=False, type=lambda x: (str(x).lower() == 'true'),
+                        help='use of token label loss')
     parser.add_argument('--token_loss_coef', default=2, type=float)
     #######
 

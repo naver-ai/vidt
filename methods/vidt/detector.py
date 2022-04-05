@@ -17,12 +17,12 @@ from methods.swin_w_ram import swin_nano, swin_tiny, swin_small, swin_base_win7,
 from methods.coat_w_ram import coat_lite_tiny, coat_lite_mini, coat_lite_small
 from .matcher import build_matcher
 from .criterion import SetCriterion
-from .postprocessor import PostProcess
+from .postprocessor import PostProcess, PostProcessSegm
 from .deformable_transformer import build_deforamble_transformer
 from methods.vidt.fpn_fusion import FPNFusionModule
 import copy
 import math
-
+from .dct import ProcessorDCT
 
 def _get_clones(module, N):
     """ Clone a moudle N times """
@@ -35,9 +35,10 @@ class Detector(nn.Module):
 
     def __init__(self, backbone, transformer, num_classes, num_queries,
                  aux_loss=False, with_box_refine=False,
-                 # The three techniques were not used in ViDT paper.
-                 # After submitting our paper, we saw the ViDT performance could be further enhanced with them.
-                 cross_scale_fusion=None, iou_aware=False, token_label=False,
+                 # The three additional techniques for ViDT+
+                 epff=None,# (1) Efficient Pyramid Feature Fusion Module
+                 with_vector=False, processor_dct=None, vector_hidden_dim=256,# (2) UQR Module
+                 iou_aware=False, token_label=False, # (3) Additional losses
                  distil=False):
         """ Initializes the model.
         Parameters:
@@ -48,7 +49,7 @@ class Detector(nn.Module):
                          DETR can detect in a single image. For COCO, we recommend 100 queries.
             aux_loss: True if auxiliary decoding losses (loss at each decoder layer) are to be used.
             with_box_refine: iterative bounding box refinement
-            cross_scale_fusion: None or fusion module available
+            epff: None or fusion module available
             iou_aware: True if iou_aware is to be used.
               see the original paper https://arxiv.org/abs/1912.05992
             token_label: True if token_label is to be used.
@@ -68,16 +69,24 @@ class Detector(nn.Module):
         self.aux_loss = aux_loss
         self.with_box_refine = with_box_refine
 
-        # three additional techniques not used in the ViDT paper
-        # optional use, we will revise our paper for the below techniques
+
+        # For UQR module for ViDT+
+        self.with_vector = with_vector
+        self.processor_dct = processor_dct
+        if self.with_vector:
+            print(f'Training with vector_hidden_dim {vector_hidden_dim}.', flush=True)
+            self.vector_embed = MLP(hidden_dim, vector_hidden_dim, self.processor_dct.n_keep, 3)
+
+        ############ Modified for ViDT+
+        # For two additional losses for ViDT+
         self.iou_aware = iou_aware
         self.token_label = token_label
 
         # distillation
         self.distil = distil
 
-        # [PATCH] token channel reduction for the input to transformer decoder
-        if cross_scale_fusion is None:
+        # For EPFF module for ViDT+
+        if epff is None:
             num_backbone_outs = len(backbone.num_channels)
             input_proj_list = []
             for _ in range(num_backbone_outs):
@@ -96,7 +105,8 @@ class Detector(nn.Module):
             self.fusion = None
         else:
             # the cross scale fusion module has its own reduction layers
-            self.fusion = cross_scale_fusion
+            self.fusion = epff
+        ############
 
         # channel dim reduction for [DET] tokens
         self.tgt_proj = nn.Sequential(
@@ -125,6 +135,12 @@ class Detector(nn.Module):
         nn.init.xavier_uniform_(self.query_pos_proj[0].weight, gain=1)
         nn.init.constant_(self.query_pos_proj[0].bias, 0)
 
+        ############ Added for UQR
+        if self.with_vector:
+            nn.init.constant_(self.vector_embed.layers[-1].weight.data, 0)
+            nn.init.constant_(self.vector_embed.layers[-1].bias.data, 0)
+        ############
+
         # the prediction is made for each decoding layers + the standalone detector (Swin with RAM)
         num_pred = transformer.decoder.num_layers + 1
 
@@ -140,6 +156,12 @@ class Detector(nn.Module):
             self.class_embed = nn.ModuleList([self.class_embed for _ in range(num_pred)])
             self.bbox_embed = nn.ModuleList([self.bbox_embed for _ in range(num_pred)])
             self.transformer.decoder.bbox_embed = None
+
+        ############ Added for UQR
+        if self.with_vector:
+            nn.init.constant_(self.vector_embed.layers[-1].bias.data[2:], -2.0)
+            self.vector_embed = nn.ModuleList([self.vector_embed for _ in range(num_pred)])
+        ############
 
         if self.iou_aware:
             self.iou_embed = MLP(hidden_dim, hidden_dim, 1, 3)
@@ -170,8 +192,7 @@ class Detector(nn.Module):
                             If iou_aware is True, "pred_ious" is also returns as one of the key in "aux_outputs"
             - "enc_tokens": If token_label is True, "enc_tokens" is returned to be used
 
-            Note that aux_loss and box refinement is used in ViDT in default. The detailed ablation of using
-            the cross_scale_fusion, iou_aware & token_lablel loss will be discussed in a later version
+            Note that aux_loss and box refinement is used in ViDT in default.
         """
 
         if isinstance(samples, (list, torch.Tensor)):
@@ -197,7 +218,7 @@ class Detector(nn.Module):
             for l, src in enumerate(features):
                 srcs.append(self.input_proj[l](src))
         else:
-            # multi-scale fusion is used if fusion is not None
+            # EPFF (multi-scale fusion) is used if fusion is activated
             srcs = self.fusion(features)
 
         masks = []
@@ -237,12 +258,29 @@ class Detector(nn.Module):
         outputs_class = torch.stack(outputs_classes)
         outputs_coord = torch.stack(outputs_coords)
 
+        ############ Added for UQR
+        outputs_vector = None
+        if self.with_vector:
+            outputs_vectors = []
+            for lvl in range(hs.shape[0]):
+                outputs_vector = self.vector_embed[lvl](hs[lvl])
+                outputs_vectors.append(outputs_vector)
+            outputs_vector = torch.stack(outputs_vectors)
+        ############
+
         # final prediction is made the last decoding layer
         out = {'pred_logits': outputs_class[-1], 'pred_boxes': outputs_coord[-1]}
 
+        ############ Added for UQR
+        if self.with_vector:
+            out.update({'pred_vectors': outputs_vector[-1]})
+
+        ############
+
         # aux loss is defined by using the rest predictions
         if self.aux_loss and self.transformer.decoder.num_layers > 0:
-            out['aux_outputs'] = self._set_aux_loss(outputs_class, outputs_coord)
+            out['aux_outputs'] = self._set_aux_loss(outputs_class, outputs_coord, outputs_vector)
+
 
         # iou awareness loss is defined for each decoding layer similar to auxiliary decoding loss
         if self.iou_aware:
@@ -268,13 +306,17 @@ class Detector(nn.Module):
         return out
 
     @torch.jit.unused
-    def _set_aux_loss(self, outputs_class, outputs_coord):
+    def _set_aux_loss(self, outputs_class, outputs_coord, outputs_vector):
         # this is a workaround to make torchscript happy, as torchscript
         # doesn't support dictionary with non-homogeneous values, such
         # as a dict having both a Tensor and a list.
 
-        return [{'pred_logits': a, 'pred_boxes': b}
-                for a, b in zip(outputs_class[:-1], outputs_coord[:-1])]
+        if outputs_vector is None:
+            return [{'pred_logits': a, 'pred_boxes': b}
+                    for a, b in zip(outputs_class[:-1], outputs_coord[:-1])]
+        else:
+            return [{'pred_logits': a, 'pred_boxes': b, 'pred_vectors': c}
+                    for a, b, c in zip(outputs_class[:-1], outputs_coord[:-1], outputs_vector[:-1])]
 
 
 class MLP(nn.Module):
@@ -293,10 +335,14 @@ class MLP(nn.Module):
 
 def build(args, is_teacher=False):
 
-    # a teacher model for distilation
+    # distillation is deprecated
     if is_teacher:
-        return build_teacher(args)
-    #
+        print('Token Distillation is deprecated in this version. Please use the previous version of ViDT.')
+    assert is_teacher is False
+    # a teacher model for distilation
+    #if is_teacher:
+    #    return build_teacher(args)
+    ############################
 
     if args.dataset_file == 'coco':
         num_classes = 91
@@ -329,11 +375,15 @@ def build(args, is_teacher=False):
                           pos_dim=args.reduced_dim,
                           cross_indices=args.cross_indices)
 
-    cross_scale_fusion = None
-    if args.cross_scale_fusion:
-        cross_scale_fusion = FPNFusionModule(backbone.num_channels, fuse_dim=args.reduced_dim)
+    epff = None
+    if args.epff:
+        epff = FPNFusionModule(backbone.num_channels, fuse_dim=args.reduced_dim)
 
     deform_transformers = build_deforamble_transformer(args)
+
+    # Added for UQR module
+    if args.with_vector:
+        processor_dct = ProcessorDCT(args.n_keep, args.gt_mask_len)
 
     model = Detector(
         backbone,
@@ -343,10 +393,15 @@ def build(args, is_teacher=False):
         # two essential techniques used in ViDT
         aux_loss=args.aux_loss,
         with_box_refine=args.with_box_refine,
-        # three additional techniques (optionally)
-        cross_scale_fusion=cross_scale_fusion,
+        # an epff module for ViDT+
+        epff=epff,
+        # an UQR module for ViDT+
+        with_vector=args.with_vector,
+        processor_dct=processor_dct if args.with_vector else None,
+        # two additional losses for VIDT+
         iou_aware=args.iou_aware,
         token_label=args.token_label,
+        vector_hidden_dim=args.vector_hidden_dim,
         # distil
         distil=False if args.distil_model is None else True,
     )
@@ -363,6 +418,10 @@ def build(args, is_teacher=False):
         weight_dict['loss_token_focal'] = args.token_loss_coef
         weight_dict['loss_token_dice'] = args.token_loss_coef
 
+    # For UQR module
+    if args.masks:
+        weight_dict["loss_vector"] = 1
+
     if args.distil_model is not None:
         weight_dict['loss_distil'] = args.distil_loss_coef
 
@@ -378,14 +437,28 @@ def build(args, is_teacher=False):
     if args.iou_aware:
         losses += ['iouaware']
 
+    # For UQR
+    if args.masks:
+        losses += ["masks"]
+
     # num_classes, matcher, weight_dict, losses, focal_alpha=0.25
-    criterion = SetCriterion(num_classes, matcher, weight_dict, losses, focal_alpha=args.focal_alpha)
+    criterion = SetCriterion(num_classes, matcher, weight_dict, losses,
+                             focal_alpha=args.focal_alpha,
+                             # For UQR
+                             with_vector=args.with_vector,
+                             processor_dct=processor_dct if args.with_vector else None,
+                             vector_loss_coef=args.vector_loss_coef,
+                             no_vector_loss_norm=args.no_vector_loss_norm,
+                             vector_start_stage=args.vector_start_stage)
     criterion.to(device)
-    postprocessors = {'bbox': PostProcess(args.dataset_file)}
+    # HER -=> post도 고쳐야함.
+    postprocessors = {'bbox': PostProcess(processor_dct=processor_dct if (args.with_vector) else None)}
+    if args.masks:
+        postprocessors['segm'] = PostProcessSegm(processor_dct=processor_dct if args.with_vector else None)
 
     return model, criterion, postprocessors
 
-
+''' deprecated
 def build_teacher(args):
 
     if args.dataset_file == 'coco':
@@ -433,3 +506,4 @@ def build_teacher(args):
     )
 
     return model
+'''

@@ -270,6 +270,7 @@ class Normalize(object):
         target = target.copy()
         h, w = image.shape[-2:]
         if "boxes" in target:
+            target['xyxy_boxes'] = target["boxes"]
             boxes = target["boxes"]
             boxes = box_xyxy_to_cxcywh(boxes)
             boxes = boxes / torch.tensor([w, h, w, h], dtype=torch.float32)

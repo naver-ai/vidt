@@ -19,6 +19,9 @@ from util.misc import (nested_tensor_from_tensor_list,
                        is_dist_avail_and_initialized)
 from methods.segmentation import (dice_loss, sigmoid_focal_loss)
 import copy
+from util.detectron2.structures.masks import BitMasks
+import cv2
+import numpy as np
 
 
 class SetCriterion(nn.Module):
@@ -28,7 +31,13 @@ class SetCriterion(nn.Module):
         2) we supervise each pair of matched ground-truth / prediction (supervise class and box)
     """
 
-    def __init__(self, num_classes, matcher, weight_dict, losses, focal_alpha=0.25):
+    def __init__(self, num_classes, matcher, weight_dict, losses, focal_alpha=0.25,
+                 # For UQR module for instance segmentation
+                 with_vector=False,
+                 processor_dct=None,
+                 vector_loss_coef=0.7,
+                 no_vector_loss_norm=False,
+                 vector_start_stage=0):
         """ Create the criterion.
         Parameters:
             num_classes: number of object categories, omitting the special no-object category
@@ -44,6 +53,18 @@ class SetCriterion(nn.Module):
         self.weight_dict = weight_dict
         self.losses = losses
         self.focal_alpha = focal_alpha
+        #
+        self.with_vector = with_vector
+        self.processor_dct = processor_dct
+        self.vector_loss_coef = vector_loss_coef
+        self.no_vector_loss_norm = no_vector_loss_norm
+        self.vector_start_stage = vector_start_stage
+
+        if self.with_vector is True:
+            print(f'Training with {6-self.vector_start_stage} vector stages.')
+            print(f"Training with vector_loss_coef {self.vector_loss_coef}.")
+            if not self.no_vector_loss_norm:
+                print('Training with vector_loss_norm.')
 
     def loss_labels(self, outputs, targets, indices, num_boxes, log=True):
         """Classification loss (NLL)
@@ -113,30 +134,52 @@ class SetCriterion(nn.Module):
         """Compute the losses related to the masks: the focal loss and the dice loss.
            targets dicts must contain the key "masks" containing a tensor of dim [nb_target_boxes, h, w]
         """
-
-        assert "pred_masks" in outputs
+        assert "pred_vectors" in outputs
 
         src_idx = self._get_src_permutation_idx(indices)
         tgt_idx = self._get_tgt_permutation_idx(indices)
 
-        src_masks = outputs["pred_masks"]
+        src_masks = outputs["pred_vectors"]
+        src_boxes = outputs['pred_boxes']
 
         # TODO use valid to mask invalid areas due to padding in loss
+        target_boxes = torch.cat([t['xyxy_boxes'][i] for t, (_, i) in zip(targets, indices)], dim=0)
         target_masks, valid = nested_tensor_from_tensor_list([t["masks"] for t in targets]).decompose()
         target_masks = target_masks.to(src_masks)
+        src_vectors = src_masks[src_idx]
+        src_boxes = src_boxes[src_idx]
+        target_masks = target_masks[tgt_idx]
 
-        src_masks = src_masks[src_idx]
-        # upsample predictions to the target size
-        src_masks = interpolate(src_masks[:, None], size=target_masks.shape[-2:],
-                                mode="bilinear", align_corners=False)
-        src_masks = src_masks[:, 0].flatten(1)
+        # crop gt_masks
+        n_keep, gt_mask_len = self.processor_dct.n_keep, self.processor_dct.gt_mask_len
+        gt_masks = BitMasks(target_masks)
+        gt_masks = gt_masks.crop_and_resize(target_boxes, gt_mask_len).to(device=src_masks.device).float()
+        target_masks = gt_masks
 
-        target_masks = target_masks[tgt_idx].flatten(1)
+        if target_masks.shape[0] == 0:
+            losses = {
+                "loss_vector": src_vectors.sum() * 0
+            }
+            return losses
 
-        losses = {
-            "loss_mask": sigmoid_focal_loss(src_masks, target_masks, num_boxes),
-            "loss_dice": dice_loss(src_masks, target_masks, num_boxes),
-        }
+        # perform dct transform
+        target_vectors = []
+        for i in range(target_masks.shape[0]):
+            gt_mask_i = ((target_masks[i,:,:] >= 0.5)* 1).to(dtype=torch.uint8)
+            gt_mask_i = gt_mask_i.cpu().numpy().astype(np.float32)
+            coeffs = cv2.dct(gt_mask_i)
+            coeffs = torch.from_numpy(coeffs).flatten()
+            coeffs = coeffs[torch.tensor(self.processor_dct.zigzag_table)]
+            gt_label = coeffs.unsqueeze(0)
+            target_vectors.append(gt_label)
+
+        target_vectors = torch.cat(target_vectors, dim=0).to(device=src_vectors.device)
+        losses = {}
+        if self.no_vector_loss_norm:
+            losses['loss_vector'] = self.vector_loss_coef * F.l1_loss(src_vectors, target_vectors, reduction='none').sum() / num_boxes
+        else:
+            losses['loss_vector'] = self.vector_loss_coef * F.l1_loss(src_vectors, target_vectors, reduction='mean')
+
         return losses
 
     def loss_iouaware(self, outputs, targets, indices, num_boxes):
@@ -220,13 +263,13 @@ class SetCriterion(nn.Module):
              outputs: dict of tensors, see the output specification of the model for the format
              targets: list of dicts, such that len(targets) == batch_size.
                       The expected keys in each dict depends on the losses applied, see each loss' doc
+            distil_tokens: for token distillation
         """
 
         outputs_without_aux = {k: v for k, v in outputs.items() if k != 'aux_outputs' and k != 'enc_outputs'}
 
         # Retrieve the matching between the outputs of the last layer and the targets
         indices = self.matcher(outputs_without_aux, targets)
-        _indices = indices
 
         # Compute the average number of target boxes accross all nodes, for normalization purposes
         num_boxes = sum(len(t["labels"]) for t in targets)
@@ -246,7 +289,7 @@ class SetCriterion(nn.Module):
             for i, aux_outputs in enumerate(outputs['aux_outputs']):
                 indices = self.matcher(aux_outputs, targets)
                 for loss in self.losses:
-                    if loss == 'masks':
+                    if loss == 'masks' and i < self.vector_start_stage:
                         # Intermediate masks losses are too costly to compute, we ignore them.
                         continue
                     kwargs = {}
@@ -255,7 +298,6 @@ class SetCriterion(nn.Module):
                         kwargs['log'] = False
                     l_dict = self.get_loss(loss, aux_outputs, targets, indices, num_boxes, **kwargs)
                     l_dict = {k + f'_{i}': v for k, v in l_dict.items()}
-
                     losses.update(l_dict)
 
         if 'enc_outputs' in outputs:

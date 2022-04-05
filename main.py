@@ -264,12 +264,26 @@ if __name__ == '__main__':
 
     ''' for testing
     args.method = 'vidt'
-    args.backbone_name = 'swin_tiny'
-    args.batch_size = 2
-    args.num_workers = 2
+    args.backbone_name = 'swin_nano'
+    args.batch_size = 4
+    args.num_workers = 4
     args.aux_loss = True
     args.with_box_refine = True
     args.output_dir = 'testing'
+    args.coco_path = '/mnt/ddn/datasets/COCO2017_Seg/train'
+
+    # seg
+    args.epff = True
+    args.token_label = False #True
+    args.iou_aware = False #True
+    args.with_vector = False #True
+    args.masks = False #True
+    args.vector_hidden_dim = 256 #1024
+    args.vector_loss_coef = 3.0
+    args.det_token_num = 300
+
+    args.resume = '/mnt/backbone-nfs/hwanjun/pami2022/optimized_checkpoints/vidt_plus_swin_nano_optimized.pth'
+    args.eval = True
     '''
 
     # set dim_feedforward differently
