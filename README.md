@@ -292,7 +292,7 @@ python -m torch.distributed.launch \
 
 
 <details>
-<summary>Run this command to train the <code>ViDT (Swin-tiny)</code> model in the paper :</summary>
+<summary>Run this command to train the <code>ViDT+ (Swin-tiny)</code> model in the paper :</summary>
 <pre><code>
 python -m torch.distributed.launch \
        --nproc_per_node=8 \
@@ -320,7 +320,7 @@ python -m torch.distributed.launch \
 
 
 <details>
-<summary>Run this command to train the <code>ViDT (Swin-small)</code> model in the paper :</summary>
+<summary>Run this command to train the <code>ViDT+ (Swin-small)</code> model in the paper :</summary>
 <pre><code>
 python -m torch.distributed.launch \
        --nproc_per_node=8 \
@@ -348,7 +348,7 @@ python -m torch.distributed.launch \
 
 
 <details>
-<summary>Run this command to train the <code>ViDT (Swin-base)</code> model in the paper :</summary>
+<summary>Run this command to train the <code>ViDT+ (Swin-base)</code> model in the paper :</summary>
 <pre><code>
 python -m torch.distributed.launch \
        --nproc_per_node=8 \
@@ -377,7 +377,7 @@ python -m torch.distributed.launch \
 ### Evaluation for ViDT+
 
 <details>
-<summary>Run this command to evaluate the <code>ViDT (Swin-nano)</code> model on COCO :</summary>
+<summary>Run this command to evaluate the <code>ViDT+ (Swin-nano)</code> model on COCO :</summary>
 <pre><code>
 python -m torch.distributed.launch \
        --nproc_per_node=8 \ 
@@ -399,7 +399,7 @@ python -m torch.distributed.launch \
 </details>
 
 <details>
-<summary>Run this command to evaluate the <code>ViDT (Swin-tiny)</code> model on COCO :</summary>
+<summary>Run this command to evaluate the <code>ViDT+ (Swin-tiny)</code> model on COCO :</summary>
 <pre><code>
 python -m torch.distributed.launch \
        --nproc_per_node=8 \
@@ -421,7 +421,7 @@ python -m torch.distributed.launch \
 </details>
 
 <details>
-<summary>Run this command to evaluate the <code>ViDT (Swin-small)</code> model on COCO :</summary>
+<summary>Run this command to evaluate the <code>ViDT+ (Swin-small)</code> model on COCO :</summary>
 <pre><code>
 python -m torch.distributed.launch \
        --nproc_per_node=8 \
@@ -443,7 +443,7 @@ python -m torch.distributed.launch \
 </details>
 
 <details>
-<summary>Run this command to evaluate the <code>ViDT (Swin-base)</code> model on COCO :</summary>
+<summary>Run this command to evaluate the <code>ViDT+ (Swin-base)</code> model on COCO :</summary>
 <pre><code>
 python -m torch.distributed.launch \
        --nproc_per_node=8 \
@@ -466,10 +466,10 @@ python -m torch.distributed.launch \
 
 ### Training for ViDT
 
-We used the below commands to train ViDT+ models with a single node having 8 NVIDIA GPUs.
+We used the below commands to train ViDT models with a single node having 8 NVIDIA GPUs.
 
 <details>
-<summary>Run this command to train the <code>ViDT+ (Swin-nano)</code> model in the paper :</summary>
+<summary>Run this command to train the <code>ViDT (Swin-nano)</code> model in the paper :</summary>
 <pre><code>
 python -m torch.distributed.launch \
        --nproc_per_node=8 \
