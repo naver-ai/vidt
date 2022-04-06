@@ -95,7 +95,7 @@ We combined the four proposed components (even with distillation with token matc
 
 We combined all the proposed components (even with longer training epochs and decoding layer dropping) to achive high accuracy and speed for object detection. As summarized in below table, there are *eight* components for extension: (1) RAM, (2) the neck decoder, (3) the IoU-aware and token labeling losses, (4) the EPFF module, (5) the UQR module, (6) the use of more detection tokens, (6) the use of longer training epochs, and (8) decoding layer drop.
 
-`The numbers (3), (6), and (8) are the performance of the vanilla ViDT, its extension to ViDT+, and the fully optimized ViDT+.`
+`The numbers (2), (6), and (8) are the performance of the vanilla ViDT, its extension to ViDT+, and the fully optimized ViDT+.`
 
 <table>
 <thead>
