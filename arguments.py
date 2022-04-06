@@ -149,7 +149,7 @@ def get_args_parser():
                         help="Number of coeffs to be remained")
     parser.add_argument('--gt_mask_len', default=128, type=int,
                         help="Size of target mask")
-    parser.add_argument('--vector_loss_coef', default=0.7, type=float)
+    parser.add_argument('--vector_loss_coef', default=3.0, type=float)
     parser.add_argument('--vector_hidden_dim', default=256, type=int,
                         help="Size of the vector embeddings (dimension of the transformer)")
     parser.add_argument('--no_vector_loss_norm', default=False, action='store_true')
