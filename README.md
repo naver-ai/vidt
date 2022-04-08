@@ -10,6 +10,7 @@ by [Hwanjun Song](https://scholar.google.com/citations?user=Ijzuc-8AAAAJ&hl=en&o
 * **`Oct 26, 2021`:** **[IoU-awareness loss](https://arxiv.org/pdf/1912.05992.pdf), and [token labeling loss](https://arxiv.org/pdf/2104.10858.pdf) are available with ViDT.**
 * **`Nov 5, 2021`:** **The official code is released!**
 * **`Jan 21, 2022`:** **ViDT is accepted to ICLR 2022!**
+* **`April 6, 2022`:** **We release ViDT+, an extension of ViDT, for joint-learning [[Go to new branch](https://github.com/naver-ai/vidt/tree/vidt-plus)]!**
 
 ## ViDT: Vision and Detection Transformers
 
