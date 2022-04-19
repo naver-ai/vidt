@@ -7,6 +7,7 @@ by [Hwanjun Song](https://scholar.google.com/citations?user=Ijzuc-8AAAAJ&hl=en&o
 <sup>1</sup> NAVER AI Lab, <sup>2</sup> Google Research, <sup>3</sup> University California Merced
 
 * **`April 6, 2022`:** **The official code is released!** </br> We obtained a light-weight transformer-based detector, achieving 47.0AP only with 14M parameters and 41.9 FPS (NVIDIA A100). </br> See [Complete Analysis](#C).
+* **`April 19, 2022`:** **The preprint is uploaded, See [[here](https://arxiv.org/abs/2204.07962)]!**
 
 ## ViDT+ for Joint-learning of Object Detection and Instance Segmentation
 
