@@ -660,9 +660,10 @@ Please consider citation if our paper is useful in your research.
 ```
 
 ```BibTeX
-@inproceedings{song2022vidtplus,
+@article{song2022vidtplus,
   title={An Extendable, Efficient and Effective Transformer-based Object Detector},
   author={Song, Hwanjun and Sun, Deqing and Chun, Sanghyuk and Jampani, Varun and Han, Dongyoon and Heo, Byeongho and Kim, Wonjae and Yang, Ming-Hsuan},
+  journal={arXiv preprint arXiv:2204.07962},
   year={2022}
 }
 ```
