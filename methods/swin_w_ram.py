@@ -949,7 +949,7 @@ def swin_nano(pretrained=None, **kwargs):
 
     if pretrained is not None:
         if pretrained == 'imagenet':
-            torch.hub._download_url_to_file(
+            torch.hub.download_url_to_file(
                     url="https://github.com/naver-ai/vidt/releases/download/v0.1-swin/swin_nano_patch4_window7_224.pth",
                 dst="checkpoint.pth"
             )
@@ -974,7 +974,7 @@ def swin_tiny(pretrained=None, **kwargs):
 
     if pretrained is not None:
         if pretrained == 'imagenet':
-            torch.hub._download_url_to_file(
+            torch.hub.download_url_to_file(
                 url="https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_tiny_patch4_window7_224.pth",
                 dst="checkpoint.pth"
             )
@@ -997,7 +997,7 @@ def swin_small(pretrained=None, **kwargs):
 
     if pretrained is not None:
         if pretrained == 'imagenet':
-            torch.hub._download_url_to_file(
+            torch.hub.download_url_to_file(
                 url="https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_small_patch4_window7_224.pth",
                 dst="checkpoint.pth"
             )
@@ -1020,7 +1020,7 @@ def swin_base_win7(pretrained=None, **kwargs):
 
     if pretrained is not None:
         if pretrained == 'imagenet':
-            torch.hub._download_url_to_file(
+            torch.hub.download_url_to_file(
                 url="https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window7_224_22k.pth",
                 dst="checkpoint.pth"
             )
@@ -1043,7 +1043,7 @@ def swin_large_win7(pretrained=None, **kwargs):
 
     if pretrained is not None:
         if pretrained == 'imagenet':
-            torch.hub._download_url_to_file(
+            torch.hub.download_url_to_file(
                 url="https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window7_224_22k.pth",
                 dst="checkpoint.pth"
             )
